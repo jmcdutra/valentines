@@ -18,6 +18,20 @@ export function useGeolocation() {
   });
 
   const requestPermission = useCallback(async (): Promise<boolean> => {
+    // Geolocation requires HTTPS (except localhost)
+    if (
+      typeof window !== "undefined" &&
+      window.location.protocol === "http:" &&
+      !window.location.hostname.match(/^(localhost|127\.0\.0\.1)$/)
+    ) {
+      setState((prev) => ({
+        ...prev,
+        error:
+          "o site precisa de HTTPS pra usar a localizacao. o browser bloqueia em HTTP.",
+      }));
+      return false;
+    }
+
     if (!navigator.geolocation) {
       setState((prev) => ({
         ...prev,
