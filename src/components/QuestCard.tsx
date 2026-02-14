@@ -41,6 +41,11 @@ export default function QuestCard({
     [quest.quiz, quizAnswered]
   );
 
+  const gotAnyWrong = useMemo(
+    () => quest.quiz.some((q) => quizAnswered[q.id] !== null && quizAnswered[q.id] !== undefined && quizAnswered[q.id] !== q.correctIndex),
+    [quest.quiz, quizAnswered]
+  );
+
   const canComplete = allAnswered && locationVerified && !isCompleted;
 
   return (
@@ -95,9 +100,9 @@ export default function QuestCard({
             ))}
           </div>
 
-          {allAnswered && (
+          {allAnswered && gotAnyWrong && (
             <div className="mt-4 p-3 rounded-lg text-xs text-center animate-fade" style={{ background: "var(--warm-bg)", color: "var(--warm)" }}>
-              dia dos namorados, entao voce passa de qualquer jeito
+              e dia dos namorados entao vou deixar voce passar gata s2
             </div>
           )}
         </div>
