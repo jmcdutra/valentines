@@ -22,6 +22,7 @@ export interface Quest5Data {
   id: number;
   title: string;
   intro: string;
+  introExplain: string;
   phase1: {
     title: string;
     description: string;
@@ -41,7 +42,7 @@ export const quests: Quest[] = [
   {
     id: 1,
     title: "onde tudo comeca",
-    clue: "sua primeira pista ta bem aqui, no lugar que voce volta sempre que precisa ser amada, onde você busca meu abraço e meu calor!",
+    clue: "a primeira pista ta no lugar que voce mais gosta de estar comigo. onde a gente assiste Friends debaixo do cobertor e onde voce rouba as minhas t-shirts. onde e que voce vai quando quer colo?",
     location: {
       name: "minha casinha",
       lat: 41.1837795,
@@ -59,7 +60,7 @@ export const quests: Quest[] = [
   {
     id: 2,
     title: "onde a vida comeca",
-    clue: "lembra quando a Rachel teve a Emma e o Ross desmaiou? e quando a Phoebe ficou internada com os tripletos? vai ate o lugar onde a vida comeca aqui no Porto. o Dr. Drake Ramoray ia se sentir em casa.",
+    clue: "o Dr. Drake Ramoray trabalhava num sitio assim. a Emma nasceu num, a Phoebe teve os tripletos noutro. qual e o lugar aqui no Porto onde a vida comeca, onde se ouvem os primeiros choros e onde o Ross desmaiaria outra vez?",
     location: {
       name: "Hospital Sao Joao",
       lat: 41.1832328,
@@ -82,7 +83,7 @@ export const quests: Quest[] = [
   {
     id: 3,
     title: "we were on a break!",
-    clue: "o Ross falou \"we were on a break\" mais vezes do que a gente consegue contar. agora e sua vez de fazer uma paragem. vai ate o lugar mais bonito do Porto pra comecar uma viagem, onde os azulejos contam historias e os comboios partem. mas hoje a viagem e essa aventura.",
+    clue: "\"we were on a break\" — o Ross repetiu isso mil vezes. break tambem pode ser uma paragem. onde e que no Porto as pessoas fazem paragens antes de partir, rodeadas de azulejos que contam historias de um pais inteiro?",
     location: {
       name: "Estacao Sao Bento",
       lat: 41.1454,
@@ -105,7 +106,7 @@ export const quests: Quest[] = [
   {
     id: 4,
     title: "could I BE mais perto?",
-    clue: "quando o Chandler foi transferido pra Tulsa mas voltou porque nao conseguia ficar longe da Monica... as vezes a gente precisa de cambio. sobe a rua desde a estacao e procura o lugar onde trocam moedas e notas. voce ta quase la.",
+    clue: "o Ross foi pra China e trouxe a Julie, o Chandler foi pra Tulsa e só queria voltar pra Monica. Mas antes de qualquer viagem a gente precisa trocar dinheiro, e as vezes comprar algo que brilha. Onde eu posso trocar meu euro por libras por aqui perto, pra gente ver o casamento do Ross e da Emily?",
     location: {
       name: "Unicambio",
       lat: 41.1462952,
@@ -131,9 +132,10 @@ export const quest5: Quest5Data = {
   id: 5,
   title: "a surpresa final",
   intro: "voce ta mais perto do que imagina. nao precisa ir pra lugar nenhum, a surpresa ta nesse predio. mas primeiro prova que voce e a maior fa de Friends pra desbloquear os codigos.",
+  introExplain: "Agora você vai encontrar a senha de 02 tesouros que eu escondi no centro do porto. Cada resposta certa revela um digito de um código. São dois codigos no total, e você vai precisar dos dois, confia em mim!",
   phase1: {
     title: "codigo da porta de entrada",
-    description: "a entrada do predio e na Rua Sa da Bandeira, n. 5. as portas de vidro abrem com um codigo. responde as perguntas pra descobrir cada digito.",
+    description: "a entrada do predio eh na Rua Sa da Bandeira, n. 5. as portas de vidro abrem com um codigo. responda as perguntas pra descobrir cada digito!",
     questions: [
       {
         id: "q5p1_1",
@@ -189,7 +191,7 @@ export const quest5: Quest5Data = {
   },
   phase2: {
     title: "codigo da caixa da chave",
-    description: "agora sobe ao 3o andar e procura um pequeno compartimento cinzento do lado direito. abre manualmente, insere o codigo e pressiona os botoes laterais ao mesmo tempo pra pegar a chave.",
+    description: "agora suba p/ o 3o andar e procure um pequeno compartimento cinzento do lado direito. Abra-o manualmente, insira o codigo e pressione os botoes laterais ao mesmo tempo pra pegar a chave!",
     questions: [
       {
         id: "q5p2_1",
@@ -225,7 +227,7 @@ export const quest5: Quest5Data = {
         digit: "3",
       },
     ],
-    codeLabel: "codigo da caixa cinzenta — 3o andar, lado direito",
+    codeLabel: "codigo da caixa cinzenta",
   },
   instructions: [
     "A entrada do predio e a mesma da Unicambio, na Rua Sa da Bandeira, n. 5.",

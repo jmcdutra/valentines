@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import { KeyRound, ArrowRight, Home, Heart } from "lucide-react";
 import type { Quest5Data } from "@/lib/quests";
 import QuizQuestion from "./QuizQuestion";
@@ -31,6 +31,7 @@ export default function Quest5Card({
 }: Quest5CardProps) {
   const phase1Digits = quest5.phase1.questions.map((q) => q.digit || "?");
   const phase2Digits = quest5.phase2.questions.map((q) => q.digit || "?");
+  const [showedExplain, setShowedExplain] = useState(phase >= 1);
 
   const allP1Answered = useMemo(
     () => quest5.phase1.questions.every((q) => quizAnswered[q.id] !== null && quizAnswered[q.id] !== undefined),
@@ -58,7 +59,7 @@ export default function Quest5Card({
       </div>
 
       {/* intro */}
-      {phase === 0 && (
+      {phase === 0 && !showedExplain && (
         <div className="animate-enter">
           <div className="card card-purple p-5 mb-5">
             <p
@@ -68,9 +69,27 @@ export default function Quest5Card({
               {quest5.intro}
             </p>
           </div>
+          <button className="btn btn-primary w-full" onClick={() => setShowedExplain(true)}>
+            continuar
+            <ArrowRight size={16} />
+          </button>
+        </div>
+      )}
+
+      {/* explain */}
+      {phase === 0 && showedExplain && (
+        <div className="animate-enter">
+          <div className="card card-warm p-5 mb-5">
+            <p
+              className="text-sm leading-relaxed"
+              style={{ color: "var(--text-secondary)", fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            >
+              {quest5.introExplain}
+            </p>
+          </div>
           <button className="btn btn-primary w-full" onClick={() => onSetPhase(1)}>
             <KeyRound size={16} />
-            desbloquear codigos
+            vamos la
           </button>
         </div>
       )}
@@ -235,7 +254,7 @@ export default function Quest5Card({
           <div className="text-center mt-6 animate-enter">
             <Heart size={20} className="text-[var(--error)] mx-auto mb-2" fill="var(--error)" />
             <p className="text-sm" style={{ fontFamily: "var(--font-display)", fontStyle: "italic", color: "var(--text-secondary)" }}>
-              feliz dia dos namorados, Ju.
+              feliz dia dos namorados, minha princesa.
             </p>
             <p className="text-xs mt-3" style={{ color: "var(--text-muted)" }}>
               &ldquo;He&apos;s her lobster!&rdquo; — Phoebe

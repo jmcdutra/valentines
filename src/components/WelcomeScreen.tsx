@@ -56,16 +56,18 @@ export default function WelcomeScreen({
         {step === "intro" && (
           <div className="animate-enter stagger">
             <div className="flex justify-center mb-10 animate-enter">
-              <div className="peephole">
-                <Coffee size={28} className="text-[var(--warm)]" />
-              </div>
+              <img
+                src="/valentine.png"
+                alt=""
+                className="w-48 h-48 object-contain"
+              />
             </div>
 
             <h1
               className="text-3xl font-bold text-center mb-2 animate-enter"
               style={{ fontFamily: "var(--font-display)", color: "var(--text)" }}
             >
-              princesa,
+              minha princesa,
             </h1>
 
             <p
@@ -78,8 +80,8 @@ export default function WelcomeScreen({
             <div className="card p-5 mb-8 animate-enter">
               <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                 uma aventura pelo Porto com a nossa serie favorita.
-                em cada parada voce responde uma pergunta de Friends e
-                descobre a proxima pista. no final tem uma surpresa.
+                em cada parada vc responde uma pergunta de Friends e
+                descobre a proxima pista! e no final tem uma surpresinha :)
               </p>
             </div>
 

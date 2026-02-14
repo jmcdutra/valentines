@@ -102,7 +102,7 @@ export default function QuestCard({
 
           {allAnswered && gotAnyWrong && (
             <div className="mt-4 p-3 rounded-lg text-xs text-center animate-fade" style={{ background: "var(--warm-bg)", color: "var(--warm)" }}>
-              e dia dos namorados entao vou deixar voce passar gata s2
+              eh dia dos namorados entao vou deixar voce passar gata s2
             </div>
           )}
         </div>

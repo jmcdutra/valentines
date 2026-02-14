@@ -11,9 +11,9 @@
   --border-light: #ece5d8;
 
   /* The iconic purple door */
-  --purple: #7b4fa2;
-  --purple-soft: #9b71bd;
-  --purple-bg: #f3eef8;
+  --purple: #9973B2;
+  --purple-soft: #b08ec7;
+  --purple-bg: #f5f0f9;
 
   /* Warm accent — the couch, the coffee */
   --warm: #c4783e;
@@ -32,7 +32,7 @@
   --error-bg: #fdf0f0;
 
   /* The yellow peephole frame */
-  --gold-frame: #e8b84b;
+  --gold-frame: #FACE14;
 
   --font-display: 'Lora', Georgia, serif;
   --font-body: 'Nunito', system-ui, sans-serif;
@@ -193,7 +193,7 @@ body {
 
 .card-purple {
   background: var(--purple-bg);
-  border-color: rgba(123, 79, 162, 0.12);
+  border-color: rgba(153, 115, 178, 0.12);
 }
 
 /* ===========================
@@ -361,7 +361,7 @@ body {
   align-items: center;
   justify-content: center;
   background: var(--surface);
-  box-shadow: 0 2px 8px rgba(232, 184, 75, 0.15);
+  box-shadow: 0 2px 8px rgba(250, 206, 20, 0.2);
 }
 
 /* ===========================
