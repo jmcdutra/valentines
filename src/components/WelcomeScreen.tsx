@@ -1,11 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Coffee, MapPin, ArrowRight, Check } from "lucide-react";
+import { Coffee, MapPin, ArrowRight, Check, Settings } from "lucide-react";
 
 interface WelcomeScreenProps {
   onStart: () => void;
   onPermissionGranted: () => Promise<boolean>;
+}
+
+function isIOS(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 }
 
 export default function WelcomeScreen({
@@ -15,17 +21,32 @@ export default function WelcomeScreen({
   const [step, setStep] = useState<"intro" | "permission" | "ready">("intro");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [denied, setDenied] = useState(false);
 
   const handlePermission = async () => {
     setLoading(true);
     setError(null);
+    setDenied(false);
     const ok = await onPermissionGranted();
     setLoading(false);
     if (ok) {
       setStep("ready");
     } else {
-      setError("preciso da sua localizacao pra essa aventura funcionar. permite o acesso e tenta de novo.");
+      setDenied(true);
+      if (isIOS()) {
+        setError(
+          "no iOS, vai em Ajustes > Safari > Localizacao e muda pra \"Permitir\" ou \"Perguntar\". depois volta aqui e tenta de novo."
+        );
+      } else {
+        setError(
+          "preciso da sua localizacao pra essa aventura funcionar. permite o acesso e tenta de novo."
+        );
+      }
     }
+  };
+
+  const handleSkip = () => {
+    setStep("ready");
   };
 
   return (
@@ -99,6 +120,12 @@ export default function WelcomeScreen({
 
             {error && (
               <div className="mb-6 p-4 rounded-lg text-sm" style={{ background: "var(--error-bg)", border: "1px solid var(--error)", color: "var(--error)" }}>
+                {isIOS() && denied && (
+                  <div className="flex items-center gap-2 mb-2 font-semibold">
+                    <Settings size={14} />
+                    <span>ajustes do iOS</span>
+                  </div>
+                )}
                 {error}
               </div>
             )}
@@ -120,6 +147,22 @@ export default function WelcomeScreen({
                 </>
               )}
             </button>
+
+            {denied && (
+              <button
+                className="btn btn-outline w-full mt-3"
+                onClick={handleSkip}
+              >
+                pular por agora
+                <ArrowRight size={16} />
+              </button>
+            )}
+
+            {denied && (
+              <p className="text-center mt-4 text-xs" style={{ color: "var(--text-muted)" }}>
+                voce vai poder permitir quando precisar verificar a localizacao.
+              </p>
+            )}
           </div>
         )}
 
