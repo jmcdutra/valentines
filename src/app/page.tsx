@@ -1,65 +1,138 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect } from "react";
+import { Coffee, RotateCcw } from "lucide-react";
+import { useProgress } from "@/hooks/useProgress";
+import { useGeolocation } from "@/hooks/useGeolocation";
+import { quests, quest5 } from "@/lib/quests";
+import WelcomeScreen from "@/components/WelcomeScreen";
+import ProgressBar from "@/components/ProgressBar";
+import QuestCard from "@/components/QuestCard";
+import Quest5Card from "@/components/Quest5Card";
+import Confetti from "@/components/Confetti";
 
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+  const {
+    state,
+    hydrated,
+    devMode,
+    startGame,
+    answerQuestion,
+    verifyLocation,
+    completeQuest,
+    setQuest5Phase,
+    revealQuest5Digit,
+    markCompleted,
+    resetProgress,
+  } = useProgress();
+
+  const geo = useGeolocation();
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [justCompleted, setJustCompleted] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (justCompleted !== null) {
+      setShowConfetti(true);
+      const t = setTimeout(() => {
+        setShowConfetti(false);
+        setJustCompleted(null);
+      }, 3500);
+      return () => clearTimeout(t);
+    }
+  }, [justCompleted]);
+
+  if (!hydrated) {
+    return (
+      <div className="min-h-dvh flex items-center justify-center">
+        <div className="text-center animate-fade">
+          <Coffee size={32} className="mx-auto mb-3 text-[var(--warm)] animate-pulse-soft" />
+          <p className="text-sm" style={{ color: "var(--text-muted)" }}>
+            preparando...
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      </div>
+    );
+  }
+
+  if (!state.started) {
+    return <WelcomeScreen onStart={startGame} onPermissionGranted={geo.requestPermission} />;
+  }
+
+  const handleQuestComplete = (i: number) => {
+    completeQuest(i);
+    setJustCompleted(i);
+  };
+
+  const handleQuest5Complete = () => {
+    markCompleted();
+    setJustCompleted(4);
+  };
+
+  const current = state.currentQuest;
+  const isQ5 = current === 4;
+
+  return (
+    <div className="min-h-dvh pb-8">
+      <Confetti active={showConfetti} />
+
+      {/* header */}
+      <div
+        className="sticky top-0 z-50"
+        style={{ background: "var(--bg)", borderBottom: "1px solid var(--border-light)" }}
+      >
+        <div className="flex items-center justify-between px-5 pt-3 pb-1">
+          <div className="flex items-center gap-2">
+            <Coffee size={14} className="text-[var(--warm)]" />
+            <p className="text-xs font-semibold tracking-wider" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-display)" }}>
+              valentine&apos;s quest
+            </p>
+          </div>
+          <button
+            className="p-1.5 rounded-md transition-colors hover:bg-[var(--bg-warm)]"
+            style={{ color: "var(--text-muted)", border: "none", background: "transparent", cursor: "pointer" }}
+            onClick={() => {
+              if (window.confirm("recomecar tudo? todo progresso vai ser perdido.")) {
+                resetProgress();
+              }
+            }}
+            title="recomecar"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <RotateCcw size={14} />
+          </button>
         </div>
-      </main>
+        <ProgressBar currentQuest={current} questsCompleted={state.questsCompleted} />
+      </div>
+
+      {/* content */}
+      {!isQ5 ? (
+        <QuestCard
+          key={`q-${current}`}
+          quest={quests[current]}
+          questIndex={current}
+          quizAnswered={state.quizAnswered}
+          locationVerified={state.locationVerified[current]}
+          isCompleted={state.questsCompleted[current]}
+          devMode={devMode}
+          onAnswerQuestion={answerQuestion}
+          onVerifyLocation={() => verifyLocation(current)}
+          onComplete={() => handleQuestComplete(current)}
+          getCurrentPosition={geo.getCurrentPosition}
+          geoLoading={geo.loading}
+        />
+      ) : (
+        <Quest5Card
+          key="q5"
+          quest5={quest5}
+          phase={state.quest5Phase}
+          quizAnswered={state.quizAnswered}
+          phase1Revealed={state.quest5Phase1Revealed}
+          phase2Revealed={state.quest5Phase2Revealed}
+          onAnswerQuestion={answerQuestion}
+          onRevealDigit={revealQuest5Digit}
+          onSetPhase={setQuest5Phase}
+          onComplete={handleQuest5Complete}
+        />
+      )}
     </div>
   );
 }

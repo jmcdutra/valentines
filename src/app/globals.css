@@ -1,26 +1,393 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Nunito:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Central Perk palette — warm, cozy, analog */
+  --bg: #f5efe6;
+  --bg-warm: #ede4d3;
+  --surface: #ffffff;
+  --surface-alt: #faf7f2;
+  --border: #e0d5c4;
+  --border-light: #ece5d8;
+
+  /* The iconic purple door */
+  --purple: #7b4fa2;
+  --purple-soft: #9b71bd;
+  --purple-bg: #f3eef8;
+
+  /* Warm accent — the couch, the coffee */
+  --warm: #c4783e;
+  --warm-soft: #d4955f;
+  --warm-bg: #fdf3eb;
+
+  /* Text */
+  --text: #2c2420;
+  --text-secondary: #7a6e62;
+  --text-muted: #a89f94;
+
+  /* Feedback */
+  --success: #5a8a6a;
+  --success-bg: #edf5f0;
+  --error: #c45c5c;
+  --error-bg: #fdf0f0;
+
+  /* The yellow peephole frame */
+  --gold-frame: #e8b84b;
+
+  --font-display: 'Lora', Georgia, serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+
+  --radius: 12px;
+  --radius-sm: 8px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-body);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===========================
+   Subtle paper texture
+   =========================== */
+.paper-texture {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* ===========================
+   Animations — subtle, intentional
+   =========================== */
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scale-up {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+@keyframes digit-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotateY(90deg);
+  }
+  60% {
+    transform: scale(1.08) rotateY(-5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg);
+  }
+}
+
+@keyframes check-stroke {
+  from { stroke-dashoffset: 48; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+@keyframes confetti-sway {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(25px); }
+  75% { transform: translateX(-25px); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-enter {
+  animation: enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-fade {
+  animation: fade-in 0.4s ease both;
+}
+
+.animate-scale {
+  animation: scale-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* stagger children */
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 80ms; }
+.stagger > *:nth-child(3) { animation-delay: 160ms; }
+.stagger > *:nth-child(4) { animation-delay: 240ms; }
+.stagger > *:nth-child(5) { animation-delay: 320ms; }
+.stagger > *:nth-child(6) { animation-delay: 400ms; }
+.stagger > *:nth-child(7) { animation-delay: 480ms; }
+
+/* ===========================
+   Card
+   =========================== */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(44, 36, 32, 0.04);
+}
+
+.card-warm {
+  background: var(--warm-bg);
+  border-color: rgba(196, 120, 62, 0.15);
+}
+
+.card-purple {
+  background: var(--purple-bg);
+  border-color: rgba(123, 79, 162, 0.12);
+}
+
+/* ===========================
+   Buttons
+   =========================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 28px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-primary {
+  composes: btn;
+  background: var(--purple);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--purple-soft);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-outline {
+  composes: btn;
+  background: transparent;
+  color: var(--purple);
+  border: 1.5px solid var(--purple);
+}
+
+.btn-outline:hover {
+  background: var(--purple-bg);
+}
+
+.btn-outline:active {
+  transform: scale(0.98);
+}
+
+.btn-warm {
+  composes: btn;
+  background: var(--warm);
+  color: #fff;
+}
+
+.btn-warm:hover {
+  background: var(--warm-soft);
+}
+
+/* ===========================
+   Quiz options
+   =========================== */
+.option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 14px 16px;
+  gap: 12px;
+  background: var(--surface-alt);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.option:hover {
+  border-color: var(--purple-soft);
+  background: var(--purple-bg);
+}
+
+.option:active {
+  transform: scale(0.99);
+}
+
+.option.correct {
+  background: var(--success-bg);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.option.wrong {
+  background: var(--error-bg);
+  border-color: var(--error);
+  color: var(--error);
+  animation: shake 0.4s ease;
+}
+
+.option:disabled {
+  cursor: default;
+}
+
+.option:disabled:hover {
+  background: var(--surface-alt);
+  border-color: var(--border);
+}
+
+.option.correct:disabled:hover {
+  background: var(--success-bg);
+  border-color: var(--success);
+}
+
+.option.wrong:disabled:hover {
+  background: var(--error-bg);
+  border-color: var(--error);
+}
+
+/* ===========================
+   Digit boxes
+   =========================== */
+.digit-cell {
+  width: 44px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-alt);
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-muted);
+  transition: all 0.3s ease;
+}
+
+.digit-cell.revealed {
+  background: var(--purple-bg);
+  border-style: solid;
+  border-color: var(--purple);
+  color: var(--purple);
+  animation: digit-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ===========================
+   Peephole frame motif
+   =========================== */
+.peephole {
+  width: 72px;
+  height: 72px;
+  border: 4px solid var(--gold-frame);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  box-shadow: 0 2px 8px rgba(232, 184, 75, 0.15);
+}
+
+/* ===========================
+   Scrollbar
+   =========================== */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+/* ===========================
+   Dev mode badge
+   =========================== */
+.dev-badge {
+  position: fixed;
+  bottom: 8px;
+  right: 8px;
+  padding: 4px 10px;
+  background: var(--error);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 4px;
+  z-index: 999;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
