@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Valentine's Quest
 
-## Getting Started
+Site interativo que eu criei como atividade/surpresa para a minha namorada.
 
-First, run the development server:
+A proposta e uma mini aventura romantica em 5 etapas pelo Porto: cada parada tem uma pista, uma pergunta sobre Friends e validacao por geolocalizacao ate chegar na surpresa final.
+
+## O que esse projeto faz
+
+- Fluxo de onboarding com pedido de permissao de localizacao
+- 4 etapas com pista + quiz tematico de Friends
+- Validacao de presenca por distancia (raio de 100m)
+- Etapa final com desbloqueio progressivo de 2 codigos
+- Barra de progresso e feedback visual (incluindo confetti)
+- Persistencia de estado no `localStorage` para continuar de onde parou
+- `dev mode` para facilitar testes sem precisar estar fisicamente nos locais
+
+## Stack
+
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS 4 + CSS customizado
+- lucide-react (icones)
+
+## Rodando localmente
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Depois abra `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Observacao: geolocalizacao no navegador exige HTTPS fora de `localhost`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
+```bash
+pnpm dev      # ambiente de desenvolvimento
+pnpm build    # build de producao
+pnpm start    # roda a build
+pnpm lint     # lint
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Estrutura rapida
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```text
+src/app          # layout global e pagina principal
+src/components   # UI (cards, quiz, progresso, confetti, etc.)
+src/hooks        # controle de progresso e geolocalizacao
+src/lib          # dados das quests e utilitarios
+public           # assets estaticos
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Contexto
 
-## Deploy on Vercel
+Projeto pessoal, feito como atividade de Dia dos Namorados.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
